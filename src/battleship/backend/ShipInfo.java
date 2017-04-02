@@ -1,11 +1,14 @@
 package battleship.backend;
 
-public abstract class Ship {
-	private int size;
-	private int[] damage;	// Each index represents a region of the ship.
+import battleship.Space;
+
+public abstract class ShipInfo {
+	protected int size;
+	protected int[] damage;	// Each index represents a region of the ship.
 							// Hit = 1, Not hit = 0.
-	private int[] coordinates;
-	private int direction;
+	protected Space[] coordinates;
+	protected int direction;
+	protected boolean destroyed;
 	
 	public abstract void place(int row, int col);
 	
@@ -21,5 +24,4 @@ public abstract class Ship {
 			return false;
 		}
 	}
-	
 }
