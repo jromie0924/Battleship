@@ -1,5 +1,7 @@
 package battleship.backend;
 
+import java.util.Random;
+
 import battleship.Space;
 
 public class SubmarineInfo extends ShipInfo {
@@ -14,7 +16,9 @@ public class SubmarineInfo extends ShipInfo {
 		size = 3;
 		damage = new int[size];
 		coordinates = new Space[size];
-		direction = 0;
 		destroyed = false;
+		
+		Random rand = new Random();
+		direction = rand.nextInt(2);
 	}
 }
