@@ -12,7 +12,7 @@ public class CarrierInfo extends ShipInfo {
 	public CarrierInfo() {
 		size = 5;
 		damage = new int[size];
-		coordinates = new Space[5];
+		coordinates = new Space[size];
 		direction = 0;
 		destroyed = false;
 	}
