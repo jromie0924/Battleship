@@ -37,115 +37,106 @@ public class Grid {
 		alreadyGuessed = new ArrayList<Space>();
 	}
 	
+	public ShipInfo[] getShips() {
+		return ships;
+	}
+	
 	public ShipInfo fitShip(ShipInfo ship) {
 		int dir = ship.getDirection();
 		int shipSize = ship.getSize();
 		Random rand = new Random();
-		Space[] shipSpot = new Space[shipSize];
 		boolean changeDirection = true;
 		
 		while(changeDirection) {
-			if(dir == 1) {	// Vertical
-				int randCol = rand.nextInt(DIM_C);
-				boolean validCol = false;
-				int startRow = -1;
-				while(!validCol) {
-					int vacantStreak = 0;
-					for(int row = 0; row < DIM_R; row++) {
-						if(!spaces[row][randCol].isOccupied()) {
-							if(vacantStreak == 0) {
-								startRow = row;
-							}
-							
-							vacantStreak++;
-							if(vacantStreak == shipSize) {
-								validCol = true;
-								break;
-							}
-							
-							spaces[row][randCol].setOccupied();
-							
-						} else {
-							vacantStreak = -1;
-							startRow = -1;
-						}
-					}
-					
-					if(!validCol) {
-						randCol = rand.nextInt(DIM_C);
-					}
-				}
-				
-				if(startRow != -1) {
-					// At this point we have found a starting Space for the ship.
-					changeDirection = false;
-					int idx = 0;
-					for(int row = startRow; row < (startRow + shipSize); row++) {
-						shipSpot[idx++] = new Space(row, randCol);
-					}
-					ship.setOccupiedSpaces(shipSpot);
-				
-				} else {
-					if(dir == 0) {
-						dir = 1;
-						ship.setDirection(dir);
-					
-					} else {
-						dir = 0;
-						ship.setDirection(dir);
-					}
-				}
-				
-			} else { // Horizontal
+			if(dir == 0) {	// Horizontal
 				int randRow = rand.nextInt(DIM_R);
 				boolean validRow = false;
 				int startCol = -1;
+				int counter = 0;
 				while(!validRow) {
-					int vacantStreak = 0;
-					for(int col = 0; col < DIM_C; col++) {
-						if(!spaces[randRow][col].isOccupied()) {
-							if(vacantStreak == 0) {
-								startCol = col;
+					int col = rand.nextInt(DIM_C);
+					if((DIM_C - 1) - col >= shipSize) {
+						boolean validStartPoint = true;
+						for(int c = col; c < col + shipSize; c++) {
+							if(spaces[randRow][col].isOccupied()) {
+								validStartPoint = false;
 							}
-							
-							vacantStreak++;
-							if(vacantStreak == shipSize) {
-								validRow = true;
-								break;
-								
+						}
+						
+						if(validStartPoint) {
+							startCol = col;
+							validRow = true;
+							for(int c = col; c < col + shipSize; c++) {
+								spaces[randRow][col].setOccupied();
 							}
-							
-							spaces[randRow][col].setOccupied();
 						
 						} else {
-							vacantStreak = -1;
-							startCol = -1;
+							if(++counter > (DIM_R + DIM_C) / 2) {
+								break;
+							}
 						}
-					}
-					
-					if(!validRow) {
-						randRow = rand.nextInt(DIM_R);
 					}
 				}
 				
-				if(startCol != -1) {
-					// At this point we have found a starting Space for the ship.
-					changeDirection = false;
+				if(validRow) {
+					Space[] occupation = new Space[shipSize];
 					int idx = 0;
-					for(int col = startCol; col < startCol + shipSize; col++) {
-						shipSpot[idx++] = new Space(randRow, col);
+					for(int c = startCol; c < startCol + shipSize; c++) {
+						occupation[idx++] = new Space(randRow, c);
 					}
-					ship.setOccupiedSpaces(shipSpot);
 					
+					ship.setOccupiedSpaces(occupation);
+					changeDirection = false;
+				
 				} else {
-					if(dir == 0) {
-						dir = 1;
-						ship.setDirection(dir);
-					
-					} else {
-						dir = 0;
-						ship.setDirection(dir);
+					dir = 1;
+					ship.setDirection(dir);
+				}
+			
+			
+			} else if(dir == 1) { // Vertical
+				int randCol = rand.nextInt(DIM_C);
+				boolean validCol = false;
+				int startRow = -1;
+				int counter = 0;
+				while(!validCol) {
+					int row = rand.nextInt(DIM_R);
+					if((DIM_R - 1) - row >= shipSize) {
+						boolean validStartPoint = true;
+						for(int r = row; r < row + shipSize; r++) {
+							if(spaces[r][randCol].isOccupied()) {
+								validStartPoint = false;
+							}
+						}
+						
+						if(validStartPoint) {
+							startRow = row;
+							validCol = true;
+							for(int r = row; r < row + shipSize; r++) {
+								spaces[r][randCol].setOccupied();
+							}
+						
+						} else {
+							if(++counter > (DIM_R + DIM_C) / 2) {
+								break;
+							}
+						}
 					}
+				}
+				
+				if(validCol) {
+					Space[] occupation = new Space[shipSize];
+					int idx = 0;
+					for(int r = startRow; r < startRow + shipSize; r++) {
+						occupation[idx++] = new Space(r, randCol);
+					}
+					
+					ship.setOccupiedSpaces(occupation);
+					changeDirection = false;
+				
+				} else {
+					dir = 0;
+					ship.setDirection(dir);
 				}
 			}
 		}
@@ -228,7 +219,23 @@ public class Grid {
 	
 	public static void main(String[] args) {
 		Grid user = new Grid();
-		Fleet userGui = new Fleet(Grid.DIM_R, Grid.DIM_C, new Color(20, 90, 204), "Player");
+		//Fleet userGui = new Fleet(Grid.DIM_R, Grid.DIM_C, new Color(20, 90, 204), "Player");
+		//JOptionPane.showMessageDialog(null, "Please Place your carrier. You can right-click to change the orientation.");
+		//userGui.setRollover(true);
+		user.fill();
+		ShipInfo[] userShips = user.getShips();
+		for(ShipInfo ship : userShips) {
+			Space[] userSpaces = ship.getOccupiedSpaces();
+			//userGui.placeShip(userSpaces);
+			System.out.println("SHIP");
+			for(Space s : userSpaces) {
+				int row = s.getRow();
+				int col = s.getCol();
+				System.out.println(row + ", " + col);
+			}
+			
+			System.out.println("\n");
+		}
 		
 	}
 }
