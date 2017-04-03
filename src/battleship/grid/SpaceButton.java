@@ -20,9 +20,8 @@ public class SpaceButton extends JButton {
 	public SpaceButton(String text) {
 		super(text);
 		super.setContentAreaFilled(false);
-		backgroundColor = new Color(20, 90, 204);
 		hoverBorderColor = new Color(255, 81, 81);
-		pressedColor = backgroundColor;
+		pressedColor = this.getForeground();
 	}
 	
 	@Override
@@ -33,8 +32,6 @@ public class SpaceButton extends JButton {
 		} else if(getModel().isRollover()) {
 			g.setColor(hoverBorderColor);
 		
-		} else {
-			g.setColor(backgroundColor);
 		}
 		
 		g.fillRect(0, 0, getWidth(), getHeight());
