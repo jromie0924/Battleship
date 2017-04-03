@@ -10,25 +10,48 @@ public abstract class ShipInfo {
 	protected int direction; // 0 for horizontal, 1 for vertical.
 	protected boolean destroyed;
 	
-	public abstract void place(int row, int col);
-	
-	public boolean hit(int idx) {
-		if(damage[idx] == 0) {
-			damage[idx] = 1;
+	public boolean hit(int row, int col) {
+		int idx = 0;
+		if(!destroyed) {
+			for(int a = 0; a < coordinates.length; a++) {
+				if(coordinates[a].getRow() == row && coordinates[a].getCol() == col) {
+					idx = a;
+					break;
+				}
+			}
 			
-			// Confirmed hit
-			return true;
+			if(damage[idx] == 0) {
+				damage[idx] = 1;
+				int numHits = 0;
+				for(int d : damage) {
+					numHits += d;
+				}
+				
+				if(numHits == damage.length) {
+					destroyed = true;
+				}
+				
+				// Confirmed hit
+				return true;
+			} else {
+				
+				// This region of the ship has already been hit. Treat as miss.
+				return false;
+			}
+		
 		} else {
-			
-			// This region of the ship has already been hit. Treat as miss.
 			return false;
 		}
 	}
 	
-	public void setCoordinates(Space[] coords) {
+	public void setOccupiedSpaces(Space[] coords) {
 		for(int idx = 0; idx < coordinates.length; idx++) {
 			coordinates[idx] = coords[idx];
 		}
+	}
+	
+	public Space[] getOccupiedSpaces() {
+		return coordinates;
 	}
 	
 	public void setDirection(int dir) {
