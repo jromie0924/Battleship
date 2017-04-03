@@ -55,10 +55,10 @@ public class Grid {
 				int counter = 0;
 				while(!validRow) {
 					int col = rand.nextInt(DIM_C);
-					if((DIM_C - 1) - col >= shipSize) {
+					if(DIM_C - col >= shipSize) {
 						boolean validStartPoint = true;
 						for(int c = col; c < col + shipSize; c++) {
-							if(spaces[randRow][col].isOccupied()) {
+							if(spaces[randRow][c].isOccupied()) {
 								validStartPoint = false;
 							}
 						}
@@ -67,7 +67,7 @@ public class Grid {
 							startCol = col;
 							validRow = true;
 							for(int c = col; c < col + shipSize; c++) {
-								spaces[randRow][col].setOccupied();
+								spaces[randRow][c].setOccupied();
 							}
 						
 						} else {
@@ -82,7 +82,7 @@ public class Grid {
 					Space[] occupation = new Space[shipSize];
 					int idx = 0;
 					for(int c = startCol; c < startCol + shipSize; c++) {
-						occupation[idx++] = new Space(randRow, c);
+						occupation[idx++] = spaces[randRow][c];
 					}
 					
 					ship.setOccupiedSpaces(occupation);
@@ -101,7 +101,7 @@ public class Grid {
 				int counter = 0;
 				while(!validCol) {
 					int row = rand.nextInt(DIM_R);
-					if((DIM_R - 1) - row >= shipSize) {
+					if(DIM_R - row >= shipSize) {
 						boolean validStartPoint = true;
 						for(int r = row; r < row + shipSize; r++) {
 							if(spaces[r][randCol].isOccupied()) {
@@ -128,7 +128,7 @@ public class Grid {
 					Space[] occupation = new Space[shipSize];
 					int idx = 0;
 					for(int r = startRow; r < startRow + shipSize; r++) {
-						occupation[idx++] = new Space(r, randCol);
+						occupation[idx++] = spaces[r][randCol];
 					}
 					
 					ship.setOccupiedSpaces(occupation);
@@ -219,11 +219,22 @@ public class Grid {
 	
 	public static void main(String[] args) {
 		Grid user = new Grid();
-		//Fleet userGui = new Fleet(Grid.DIM_R, Grid.DIM_C, new Color(20, 90, 204), "Player");
+		Fleet userGui = new Fleet(Grid.DIM_R, Grid.DIM_C, "Player");
 		//JOptionPane.showMessageDialog(null, "Please Place your carrier. You can right-click to change the orientation.");
 		//userGui.setRollover(true);
 		user.fill();
+		
 		ShipInfo[] userShips = user.getShips();
+		for(ShipInfo ship : userShips) {
+			for(Space s : ship.getOccupiedSpaces()) {
+				int row = s.getRow();
+				int col = s.getCol();
+				userGui.placeShipSpace(row, col);
+			}
+		}
+		
+		
+		
 		for(ShipInfo ship : userShips) {
 			Space[] userSpaces = ship.getOccupiedSpaces();
 			//userGui.placeShip(userSpaces);
