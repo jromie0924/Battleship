@@ -11,6 +11,10 @@ public class Space {
 		occupied = false;
 	}
 	
+	public boolean equals(Space other) {
+		return (position[0] == other.getRow() && position[1] == other.getCol());
+	}
+	
 	public void setOccupied() {
 		occupied = true;
 	}
