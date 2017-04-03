@@ -5,11 +5,6 @@ import java.util.Random;
 import battleship.Space;
 
 public class CarrierInfo extends ShipInfo {
-
-	@Override
-	public void place(int row, int col) {
-		// TODO Auto-generated method stub
-	}
 	
 	public CarrierInfo() {
 		size = 5;
