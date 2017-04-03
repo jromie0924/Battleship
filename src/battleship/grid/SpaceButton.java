@@ -7,6 +7,8 @@ import javax.swing.JButton;
 
 public class SpaceButton extends JButton {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private Color pressedColor;
 	private Color hoverBorderColor;
 	private Color backgroundColor;
