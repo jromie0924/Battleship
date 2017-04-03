@@ -1,8 +1,8 @@
-package battleship.backend;
+package battleship.ships;
 
 import java.util.Random;
 
-import battleship.Space;
+import battleship.grid.Space;
 
 public class CruiserInfo extends ShipInfo {
 	

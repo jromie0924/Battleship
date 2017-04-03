@@ -1,6 +1,6 @@
-package battleship.backend;
+package battleship.ships;
 
-import battleship.Space;
+import battleship.grid.Space;
 
 public abstract class ShipInfo {
 	protected int size;

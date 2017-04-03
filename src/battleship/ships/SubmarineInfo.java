@@ -1,13 +1,13 @@
-package battleship.backend;
+package battleship.ships;
 
 import java.util.Random;
 
-import battleship.Space;
+import battleship.grid.Space;
 
-public class BattleshipInfo extends ShipInfo {
-
-	public BattleshipInfo() {
-		size = 4;
+public class SubmarineInfo extends ShipInfo {
+	
+	public SubmarineInfo() {
+		size = 3;
 		damage = new int[size];
 		coordinates = new Space[size];
 		destroyed = false;

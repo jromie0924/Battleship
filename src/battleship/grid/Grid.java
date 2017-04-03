@@ -1,19 +1,22 @@
-package battleship;
+package battleship.grid;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import battleship.backend.BattleshipInfo;
-import battleship.backend.CarrierInfo;
-import battleship.backend.CruiserInfo;
-import battleship.backend.DestroyerInfo;
-import battleship.backend.ShipInfo;
-import battleship.backend.SubmarineInfo;
+import javax.swing.JOptionPane;
+
+import battleship.ships.BattleshipInfo;
+import battleship.ships.CarrierInfo;
+import battleship.ships.CruiserInfo;
+import battleship.ships.DestroyerInfo;
+import battleship.ships.ShipInfo;
+import battleship.ships.SubmarineInfo;
 
 public class Grid {
-	private final int DIM_R = 10;
-	private final int DIM_C = 10;
-	private final int NUM_SHIPS = 5;
+	
+	public static final int DIM_R = 10;
+	public static final int DIM_C = 10;
+	public final int NUM_SHIPS = 5;
 	
 	private Space[][] spaces;
 	
@@ -223,7 +226,8 @@ public class Grid {
 	}
 	
 	public static void main(String[] args) {
-		//Grid computer = new Grid();
-		//Grid user = new Grid();
+		Grid user = new Grid();
+		JOptionPane.showMessageDialog(null, "");
+		Fleet gui = new Fleet(Grid.DIM_R, Grid.DIM_C);
 	}
 }

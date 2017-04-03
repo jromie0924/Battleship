@@ -1,4 +1,4 @@
-package battleship;
+package battleship.grid;
 
 public class Space {
 	private int[] position;
