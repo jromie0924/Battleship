@@ -1,5 +1,6 @@
 package battleship.grid;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -227,7 +228,7 @@ public class Grid {
 	
 	public static void main(String[] args) {
 		Grid user = new Grid();
-		JOptionPane.showMessageDialog(null, "");
-		Fleet gui = new Fleet(Grid.DIM_R, Grid.DIM_C);
+		Fleet userGui = new Fleet(Grid.DIM_R, Grid.DIM_C, new Color(20, 90, 204), "Player");
+		
 	}
 }
