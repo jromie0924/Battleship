@@ -3,10 +3,6 @@ package battleship.grid;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
 public class Fleet {
@@ -20,12 +16,11 @@ public class Fleet {
 		for(int r = 0; r < rows; r++) {
 			for(int c = 0; c < cols; c++) {
 				grid[r][c] = new SpaceButton();
-				JButton currentButton = grid[r][c];
-				currentButton.setPreferredSize(new Dimension(60, 60));
-				currentButton.setBackground(new Color(20, 90, 204));
-				currentButton.setRolloverEnabled(true);
+				grid[r][c].setPreferredSize(new Dimension(60, 60));
+				grid[r][c].setBackground(new Color(20, 90, 204));
+				grid[r][c].setRolloverEnabled(true);
 				
-				frame.add(currentButton);
+				frame.add(grid[r][c]);
 			}
 		}
 		
