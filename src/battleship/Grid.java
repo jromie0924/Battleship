@@ -1,7 +1,6 @@
 package battleship;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.Random;
 
 import battleship.backend.BattleshipInfo;
@@ -19,6 +18,7 @@ public class Grid {
 	private Space[][] spaces;
 	
 	private ShipInfo[] ships;
+	private ArrayList<Space> alreadyGuessed;
 	
 	
 	public Grid() {
@@ -28,6 +28,9 @@ public class Grid {
 				spaces[row][col] = new Space(row, col);
 			}
 		}
+		
+		ships = new ShipInfo[NUM_SHIPS];
+		alreadyGuessed = new ArrayList<Space>();
 	}
 	
 	public ShipInfo fitShip(ShipInfo ship) {
@@ -76,7 +79,7 @@ public class Grid {
 					for(int row = startRow; row < (startRow + shipSize); row++) {
 						shipSpot[idx++] = new Space(row, randCol);
 					}
-					ship.setCoordinates(shipSpot);
+					ship.setOccupiedSpaces(shipSpot);
 				
 				} else {
 					if(dir == 0) {
@@ -128,7 +131,7 @@ public class Grid {
 					for(int col = startCol; col < startCol + shipSize; col++) {
 						shipSpot[idx++] = new Space(randRow, col);
 					}
-					ship.setCoordinates(shipSpot);
+					ship.setOccupiedSpaces(shipSpot);
 					
 				} else {
 					if(dir == 0) {
@@ -147,11 +150,10 @@ public class Grid {
 	}
 	
 	/**
-	 * Computer player will use this version of fill() to randomly place the ships
+	 * Computer player will use this method to randomly place the ships
 	 */
 	public void fill() {
 		// Fill the ships array
-		ships = new ShipInfo[NUM_SHIPS];
 		ships[0] = fitShip(new CarrierInfo());
 		ships[1] = fitShip(new BattleshipInfo());
 		ships[2] = fitShip(new CruiserInfo());
@@ -159,7 +161,69 @@ public class Grid {
 		ships[4] = fitShip(new DestroyerInfo());
 	}
 	
-	public static void main(String[] args) {
+	/**
+	 * Used for when the user places ships on his/her grid.
+	 * @param ship
+	 * @param shipSpot
+	 */
+	public boolean place(ShipInfo ship, Space[] shipSpot) {
+		for(Space s : shipSpot) {
+			int row = s.getRow();
+			int col = s.getCol();
+			if(spaces[row][col].isOccupied()) {
+				return false;
+			}
+		}
 		
+		for(Space s : shipSpot) {
+			int row = s.getRow();
+			int col = s.getCol();
+			spaces[row][col].setOccupied();
+		}
+		
+		ship.setOccupiedSpaces(shipSpot);
+		int idx = 0;
+		while(!(ships[idx] == null)) {
+			idx++;
+		}
+		ships[idx] = ship;
+		return true;
+	}
+	
+	public boolean fire(Space target, Grid g) {
+		int row = target.getRow();
+		int col = target.getCol();
+		boolean confirmation = false;
+		if(g.checkOccupation(spaces[row][col])) {
+			
+			// We hit one of the opponent's ships
+			for(ShipInfo ship : ships) {
+				Space[] occupation = ship.getOccupiedSpaces();
+				for(Space s : occupation) {
+					if(s.equals(target)) {
+						confirmation = ship.hit(row, col);
+					}
+				}
+			}
+		}
+		
+		alreadyGuessed.add(target);
+		return confirmation;
+	}
+	
+	public boolean checkOccupation(Space space) {
+		int row = space.getRow();
+		int col = space.getCol();
+		boolean occupied = false;
+		if(spaces[row][col].isOccupied()) {
+			occupied = true;
+		}
+		
+		return occupied;
+	}
+	
+	public static void main(String[] args) {
+		//Grid computer = new Grid();
+		//Grid user = new Grid();
 	}
 }
