@@ -37,6 +37,9 @@ public class UserGrid {
 		makeGrid();
 	}
 	
+	/** 
+	 * Creates all initial buttons for the grid
+	 */
 	public void makeGrid() {
 		for(int r = 0; r < numRows; r++) {
 			for(int c = 0; c < numCols; c++) {
@@ -54,18 +57,15 @@ public class UserGrid {
 		frame.setVisible(true);
 	}
 	
-	public void setRollover(boolean state) {
-		for(int r = 0; r < numRows; r++) {
-			for(int c = 0; c < numCols; c++) {
-				grid[r][c].setRolloverEnabled(state);
-			}
-		}
-	}
-	
+	/**
+	 * Creates the targeting grid for the user.
+	 * This grid is green (the user's ships grid is blue).
+	 */
 	public void setTargetGrid() {
 		for(int r = 0; r < numRows; r++) {
 			for(int c = 0; c < numCols; c++) {
 				grid[r][c].setForeground(Color.GREEN);
+				@SuppressWarnings("unused")
 				MouseAdapter ma;
 				grid[r][c].addMouseListener(ma = new MouseAdapter() {
 					
@@ -85,6 +85,12 @@ public class UserGrid {
 		}
 	}
 	
+	/**
+	 * @return targetCoords[] array
+	 * This list is of length 2.
+	 * Index 0 is the row of the targeted cell.
+	 * Index 1 is the column of the targeted cell.
+	 */
 	public int[] getCoords() {
 		return targetCoords;
 	}
@@ -103,23 +109,33 @@ public class UserGrid {
 		}
 	}
 	
-	public void destroyed(ShipInfo ship) {
-		Space[] spaces = ship.getOccupiedSpaces();
-		for(Space s : spaces) {
-			int r = s.getRow();
-			int c = s.getCol();
-			grid[r][c].setForeground(Color.BLACK);
-		}
-	}
-	
+	/**
+	 * Changes the color of a square specified by the parameters to red.
+	 * Indicates that the computer has hit one of the user's ships.
+	 * @param row
+	 * @param col
+	 */
 	public void imHit(int row, int col) {
 		grid[row][col].setForeground(Color.RED);
 	}
 	
+	/**
+	 * Changes the color of a square specified by the parameters to white.
+	 * Indicates that the computer has missed the target.
+	 * @param row
+	 * @param col
+	 */
 	public void theyMissed(int row, int col) {
 		grid[row][col].setForeground(Color.WHITE);
 	}
 	
+	/**
+	 * This method is meant for the user to see that they have hit one of the computer's ships.
+	 * The indicated square will be colored red if targetHit is true, and white if targetHit is false.
+	 * @param row
+	 * @param col
+	 * @param targetHit
+	 */
 	public void displayHit(int row, int col, boolean targetHit) {
 		if(targetHit) {
 			grid[row][col].setForeground(Color.RED);
@@ -129,6 +145,10 @@ public class UserGrid {
 		}
 	}
 	
+	/**
+	 * Places all ships in the user's ships grid.
+	 * @param ships
+	 */
 	public void placeShips(ShipInfo[] ships) {
 		for(ShipInfo ship : ships) {
 			for(Space s : ship.getOccupiedSpaces()) {

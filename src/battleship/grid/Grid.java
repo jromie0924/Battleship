@@ -48,6 +48,12 @@ public class Grid {
 		return ships;
 	}
 	
+	/**
+	 * This method fits a ship in the grid.
+	 * It needs to be sure that the ship will not "collide" with any other already-placed ships.
+	 * @param ship
+	 * @return
+	 */
 	public ShipInfo fitShip(ShipInfo ship) {
 		int dir = ship.getDirection();
 		int shipSize = ship.getSize();
@@ -200,27 +206,13 @@ public class Grid {
 		return true;
 	}
 	
-	public boolean fire(Space target, Grid g) {
-		int row = target.getRow();
-		int col = target.getCol();
-		boolean confirmation = false;
-		if(g.checkOccupation(spaces[row][col])) {
-			
-			// We hit one of the opponent's ships
-			for(ShipInfo ship : ships) {
-				Space[] occupation = ship.getOccupiedSpaces();
-				for(Space s : occupation) {
-					if(s.equals(target)) {
-						confirmation = ship.hit(row, col);
-					}
-				}
-			}
-		}
-		
-		alreadyGuessed.add(target);
-		return confirmation;
-	}
-	
+	/**
+	 * This method checks whether a ship has been damaged via the "impact" coordinates provided as parameters.
+	 * It will tell the appropriate UI grid to display a hit or miss according to the status of the shot.
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public boolean damageShip(int row, int col) {
 		for(ShipInfo ship : ships) {
 			for(Space s : ship.getOccupiedSpaces()) {
@@ -283,6 +275,11 @@ public class Grid {
 		return false;
 	}
 	
+	/**
+	 * This method controls how each player plays. Users and computers have slightly different ways about going about the game.
+	 * (Though the game is played fairly).
+	 * @param opponent
+	 */
 	public void play(Grid opponent) {
 		if(isUser) {
 			boolean fired = myTargetGrid.checkForFire();
@@ -327,6 +324,11 @@ public class Grid {
 		}
 	}
 	
+	/**
+	 * Checks whether a given space is occupied by a ship.
+	 * @param space
+	 * @return
+	 */
 	public boolean checkOccupation(Space space) {
 		int row = space.getRow();
 		int col = space.getCol();
@@ -338,6 +340,11 @@ public class Grid {
 		return occupied;
 	}
 	
+	/**
+	 * Main. Instantiates the players (computer and user).
+	 * Runs a loop until one of the players has won.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Grid user = new Grid(true);
 		Grid computer = new Grid(false);
