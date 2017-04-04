@@ -25,6 +25,7 @@ public class Grid {
 	private UserGrid myTargetGrid;
 	private boolean isUser;
 	public boolean myTurn;
+	public boolean lost;
 	
 	
 	public Grid(boolean user) {
@@ -37,6 +38,8 @@ public class Grid {
 		}
 		
 		myTurn = false;
+		lost = false;
+		
 		ships = new ShipInfo[NUM_SHIPS];
 		alreadyGuessed = new ArrayList<Space>();
 	}
@@ -233,11 +236,33 @@ public class Grid {
 						myShips.imHit(row, col);
 						if(ship.isDestroyed()) {
 							JOptionPane.showMessageDialog(null, "Your " + ship.getType() + " has been destroyed.");
+							boolean allDestroyed = true;
+							for(ShipInfo aShip : ships) {
+								if(!aShip.isDestroyed()) {
+									allDestroyed = false;
+									break;
+								}
+							}
+							
+							if(allDestroyed) {
+								lost = true;
+							}
 						}
 					
 					} else {
 						if(ship.isDestroyed()) {
 							JOptionPane.showMessageDialog(null, "You destroyed your opponent's " + ship.getType());
+							boolean allDestroyed = true;
+							for(ShipInfo aShip : ships) {
+								if(!aShip.isDestroyed()) {
+									allDestroyed = false;
+									break;
+								}
+							}
+							
+							if(allDestroyed) {
+								lost = true;
+							}
 						}
 					}
 					
@@ -326,6 +351,15 @@ public class Grid {
 			
 			} else {
 				computer.play(user);
+			}
+			
+			if(user.lost) {
+				gamePlaying = false;
+				JOptionPane.showMessageDialog(null, "You lost.");
+			
+			} else if(computer.lost) {
+				gamePlaying = false;
+				JOptionPane.showMessageDialog(null, "You Won!");
 			}
 		}
 	}
