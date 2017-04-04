@@ -15,4 +15,8 @@ public class SubmarineInfo extends ShipInfo {
 		Random rand = new Random();
 		direction = rand.nextInt(2);
 	}
+	
+	public String getType() {
+		return "Submarine";
+	}
 }

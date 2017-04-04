@@ -1,6 +1,5 @@
 package battleship.grid;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,12 +19,16 @@ public class Grid {
 	public final int NUM_SHIPS = 5;
 	
 	private Space[][] spaces;
-	
 	private ShipInfo[] ships;
 	private ArrayList<Space> alreadyGuessed;
+	private UserGrid myShips;
+	private UserGrid myTargetGrid;
+	private boolean isUser;
+	public boolean myTurn;
 	
 	
-	public Grid() {
+	public Grid(boolean user) {
+		isUser = user;
 		spaces = new Space[DIM_R][DIM_C];
 		for(int row = 0; row < DIM_R; row++) {
 			for(int col = 0; col < DIM_C; col++) {
@@ -33,6 +36,7 @@ public class Grid {
 			}
 		}
 		
+		myTurn = false;
 		ships = new ShipInfo[NUM_SHIPS];
 		alreadyGuessed = new ArrayList<Space>();
 	}
@@ -154,6 +158,14 @@ public class Grid {
 		ships[2] = fitShip(new CruiserInfo());
 		ships[3] = fitShip(new SubmarineInfo());
 		ships[4] = fitShip(new DestroyerInfo());
+		
+		if(isUser) {
+			myShips = new UserGrid(DIM_R, DIM_C, "Player's Ships");
+			myShips.placeShips(ships);
+			
+			myTargetGrid = new UserGrid(DIM_R, DIM_C, "Player's Target Screen");
+			myTargetGrid.setTargetGrid();
+		}
 	}
 	
 	/**
@@ -206,6 +218,89 @@ public class Grid {
 		return confirmation;
 	}
 	
+	public boolean damageShip(int row, int col) {
+		for(ShipInfo ship : ships) {
+			for(Space s : ship.getOccupiedSpaces()) {
+				if(s.getRow() == row && s.getCol() == col) {
+					ship.hit(row, col);
+					
+					if(isUser) {
+						try {
+							Thread.sleep(200);
+
+						} catch(InterruptedException e) {}
+						
+						myShips.imHit(row, col);
+						if(ship.isDestroyed()) {
+							JOptionPane.showMessageDialog(null, "Your " + ship.getType() + " has been destroyed.");
+						}
+					
+					} else {
+						if(ship.isDestroyed()) {
+							JOptionPane.showMessageDialog(null, "You destroyed your opponent's " + ship.getType());
+						}
+					}
+					
+					return true;
+				}
+			}
+		}
+		
+		if(isUser) {
+			try {
+				Thread.sleep(200);
+
+			} catch(InterruptedException e) {}
+			
+			myShips.theyMissed(row, col);
+		}
+		
+		return false;
+	}
+	
+	public void play(Grid opponent) {
+		if(isUser) {
+			boolean fired = myTargetGrid.checkForFire();
+			if(fired) {
+				int[] coords = myTargetGrid.getCoords();
+				int row = coords[0];
+				int col = coords[1];
+				
+				if(opponent.damageShip(row, col)) {	// Target hit
+					myTargetGrid.displayHit(row, col, true);
+					
+				} else {
+					myTargetGrid.displayHit(row, col, false);
+				}
+				
+				myTurn = false;
+			}
+		
+		} else {
+			Random rand = new Random();
+			int row = -1;
+			int col = -1;
+			boolean duplicate = true;
+			while(duplicate) {
+				row = rand.nextInt(DIM_R);
+				col = rand.nextInt(DIM_C);
+				duplicate = false;
+				for(int idx = 0; idx < alreadyGuessed.size(); idx++) {
+					Space current = alreadyGuessed.get(idx);
+					if(current.getRow() == row && current.getCol() == col) {
+						duplicate = true;
+						break;
+					}
+				}
+			}
+			
+			if(opponent.damageShip(row, col)) {}
+			
+			alreadyGuessed.add(spaces[row][col]);
+			opponent.myTurn = true;
+		}
+	}
+	
 	public boolean checkOccupation(Space space) {
 		int row = space.getRow();
 		int col = space.getCol();
@@ -218,35 +313,20 @@ public class Grid {
 	}
 	
 	public static void main(String[] args) {
-		Grid user = new Grid();
-		Fleet userGui = new Fleet(Grid.DIM_R, Grid.DIM_C, "Player");
-		//JOptionPane.showMessageDialog(null, "Please Place your carrier. You can right-click to change the orientation.");
-		//userGui.setRollover(true);
+		Grid user = new Grid(true);
+		Grid computer = new Grid(false);
+		boolean gamePlaying = true;
+		// Place user & computer ships
+		computer.fill();
 		user.fill();
 		
-		ShipInfo[] userShips = user.getShips();
-		for(ShipInfo ship : userShips) {
-			for(Space s : ship.getOccupiedSpaces()) {
-				int row = s.getRow();
-				int col = s.getCol();
-				userGui.placeShipSpace(row, col);
-			}
-		}
-		
-		
-		
-		for(ShipInfo ship : userShips) {
-			Space[] userSpaces = ship.getOccupiedSpaces();
-			//userGui.placeShip(userSpaces);
-			System.out.println("SHIP");
-			for(Space s : userSpaces) {
-				int row = s.getRow();
-				int col = s.getCol();
-				System.out.println(row + ", " + col);
-			}
+		while(gamePlaying) {
+			if(user.myTurn) {
+				user.play(computer);
 			
-			System.out.println("\n");
+			} else {
+				computer.play(user);
+			}
 		}
-		
 	}
 }

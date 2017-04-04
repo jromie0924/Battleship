@@ -15,4 +15,8 @@ public class BattleshipInfo extends ShipInfo {
 		Random rand = new Random();
 		direction = rand.nextInt(2);
 	}
+	
+	public String getType() {
+		return "Battleship";
+	}
 }

@@ -10,6 +10,8 @@ public abstract class ShipInfo {
 	protected int direction; // 0 for horizontal, 1 for vertical.
 	protected boolean destroyed;
 	
+	public abstract String getType();
+	
 	public boolean hit(int row, int col) {
 		int idx = 0;
 		if(!destroyed) {
@@ -48,6 +50,10 @@ public abstract class ShipInfo {
 		for(int idx = 0; idx < coordinates.length; idx++) {
 			coordinates[idx] = coords[idx];
 		}
+	}
+	
+	public boolean isDestroyed() {
+		return destroyed;
 	}
 	
 	public Space[] getOccupiedSpaces() {

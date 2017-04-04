@@ -4,7 +4,7 @@ import java.util.Random;
 
 import battleship.grid.Space;
 
-public class CarrierInfo extends ShipInfo {
+public class CarrierInfo extends ShipInfo {	
 	
 	public CarrierInfo() {
 		size = 5;
@@ -14,5 +14,9 @@ public class CarrierInfo extends ShipInfo {
 		
 		Random rand = new Random();
 		direction = rand.nextInt(2);
+	}
+	
+	public String getType() {
+		return "Carrier";
 	}
 }

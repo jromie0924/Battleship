@@ -11,17 +11,28 @@ public class SpaceButton extends JButton {
 	
 	private Color pressedColor;
 	private Color hoverBorderColor;
-	private Color backgroundColor;
+	private int row;
+	private int col;
 	
 	public SpaceButton() {
-		this(null);
+		this(null, -1, -1);
 	}
 	
-	public SpaceButton(String text) {
+	public SpaceButton(String text, int r, int c) {
 		super(text);
 		super.setContentAreaFilled(false);
 		hoverBorderColor = new Color(255, 81, 81);
 		pressedColor = this.getForeground();
+		row = r;
+		col = c;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getCol() {
+		return col;
 	}
 	
 	@Override
