@@ -177,34 +177,6 @@ public class Grid {
 		}
 	}
 	
-	/**
-	 * Used for when the user places ships on his/her grid.
-	 * @param ship
-	 * @param shipSpot
-	 */
-	public boolean place(ShipInfo ship, Space[] shipSpot) {
-		for(Space s : shipSpot) {
-			int row = s.getRow();
-			int col = s.getCol();
-			if(spaces[row][col].isOccupied()) {
-				return false;
-			}
-		}
-		
-		for(Space s : shipSpot) {
-			int row = s.getRow();
-			int col = s.getCol();
-			spaces[row][col].setOccupied();
-		}
-		
-		ship.setOccupiedSpaces(shipSpot);
-		int idx = 0;
-		while(!(ships[idx] == null)) {
-			idx++;
-		}
-		ships[idx] = ship;
-		return true;
-	}
 	
 	/**
 	 * This method checks whether a ship has been damaged via the "impact" coordinates provided as parameters.
