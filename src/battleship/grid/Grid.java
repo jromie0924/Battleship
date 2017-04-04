@@ -158,7 +158,7 @@ public class Grid {
 	}
 	
 	/**
-	 * Computer player will use this method to randomly place the ships
+	 * Each player will use this method to randomly place the ships
 	 */
 	public void fill() {
 		// Fill the ships array
