@@ -4,6 +4,11 @@ import java.util.Random;
 
 import battleship.grid.Space;
 
+/**
+ * Cruiser class has a size of 3.
+ * @author Jackson
+ *
+ */
 public class CruiserInfo extends ShipInfo {
 	
 	public CruiserInfo() {

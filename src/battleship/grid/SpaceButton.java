@@ -5,6 +5,12 @@ import java.awt.Graphics;
 
 import javax.swing.JButton;
 
+/**
+ * SpaceButton class extends JButton.
+ * Adds the two instance variables (and corresponding accessor methods) for the button's location in a grid.
+ * @author Jackson
+ *
+ */
 public class SpaceButton extends JButton {
 	
 	private static final long serialVersionUID = 1L;

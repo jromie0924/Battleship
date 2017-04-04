@@ -4,6 +4,11 @@ import java.util.Random;
 
 import battleship.grid.Space;
 
+/**
+ * Carrier class has a size of 5.
+ * @author Jackson
+ *
+ */
 public class CarrierInfo extends ShipInfo {	
 	
 	public CarrierInfo() {

@@ -4,6 +4,11 @@ import java.util.Random;
 
 import battleship.grid.Space;
 
+/**
+ * Submarine class has a size of 3.
+ * @author Jackson
+ *
+ */
 public class SubmarineInfo extends ShipInfo {
 	
 	public SubmarineInfo() {
