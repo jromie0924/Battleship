@@ -163,10 +163,10 @@ public class Grid {
 		ships[4] = fitShip(new DestroyerInfo());
 		
 		if(isUser) {
-			myShips = new UserGrid(DIM_R, DIM_C, "Player's Ships");
+			myShips = new UserGrid(DIM_R, DIM_C, "Your Ships");
 			myShips.placeShips(ships);
 			
-			myTargetGrid = new UserGrid(DIM_R, DIM_C, "Player's Target Screen");
+			myTargetGrid = new UserGrid(DIM_R, DIM_C, "Your Target Screen");
 			myTargetGrid.setTargetGrid();
 		}
 	}
@@ -291,6 +291,7 @@ public class Grid {
 				int row = coords[0];
 				int col = coords[1];
 				
+				
 				if(opponent.damageShip(row, col)) {	// Target hit
 					myTargetGrid.displayHit(row, col, true);
 					
@@ -344,6 +345,9 @@ public class Grid {
 		// Place user & computer ships
 		computer.fill();
 		user.fill();
+		
+		// User goes first
+		user.myTurn = true;
 		
 		while(gamePlaying) {
 			if(user.myTurn) {
