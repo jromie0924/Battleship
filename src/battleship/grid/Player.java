@@ -12,7 +12,7 @@ import battleship.ships.DestroyerInfo;
 import battleship.ships.ShipInfo;
 import battleship.ships.SubmarineInfo;
 
-public class Grid {
+public class Player {
 	
 	public static final int DIM_R = 10;
 	public static final int DIM_C = 10;
@@ -28,7 +28,7 @@ public class Grid {
 	public boolean lost;
 	
 	
-	public Grid(boolean user) {
+	public Player(boolean user) {
 		isUser = user;
 		spaces = new Space[DIM_R][DIM_C];
 		for(int row = 0; row < DIM_R; row++) {
@@ -252,7 +252,7 @@ public class Grid {
 	 * (Though the game is played fairly).
 	 * @param opponent
 	 */
-	public void play(Grid opponent) {
+	public void play(Player opponent) {
 		if(isUser) {
 			boolean fired = myTargetGrid.checkForFire();
 			if(fired) {
@@ -318,8 +318,8 @@ public class Grid {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Grid user = new Grid(true);
-		Grid computer = new Grid(false);
+		Player user = new Player(true);
+		Player computer = new Player(false);
 		boolean gamePlaying = true;
 		// Place user & computer ships
 		computer.fill();
