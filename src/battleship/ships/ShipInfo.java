@@ -2,6 +2,11 @@ package battleship.ships;
 
 import battleship.grid.Space;
 
+/**
+ * Abstract class ShipInfo is the parent class for each of the 5 ships in this game of battleship.
+ * @author Jackson
+ *
+ */
 public abstract class ShipInfo {
 	protected int size;
 	protected int[] damage;	// Each index represents a region of the ship.
