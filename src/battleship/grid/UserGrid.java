@@ -66,7 +66,8 @@ public class UserGrid {
 		for(int r = 0; r < numRows; r++) {
 			for(int c = 0; c < numCols; c++) {
 				grid[r][c].setForeground(Color.GREEN);
-				grid[r][c].addMouseListener(new MouseAdapter() {
+				MouseAdapter ma;
+				grid[r][c].addMouseListener(ma = new MouseAdapter() {
 					
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
@@ -74,6 +75,10 @@ public class UserGrid {
 						targetCoords[0] = source.getRow();
 						targetCoords[1] = source.getCol();
 						indicateClicked = true;
+						MouseListener[] listeners = source.getMouseListeners();
+						for(MouseListener l : listeners) {
+							source.removeMouseListener(l);
+						}
 					}
 				});
 			}
@@ -122,10 +127,6 @@ public class UserGrid {
 		} else {
 			grid[row][col].setForeground(Color.WHITE);
 		}
-	}
-	
-	public void listen(boolean listen) {
-		TargetMouseListener.setActive(listen);
 	}
 	
 	public void placeShips(ShipInfo[] ships) {
