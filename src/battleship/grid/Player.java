@@ -5,12 +5,9 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import battleship.ships.BattleshipInfo;
-import battleship.ships.CarrierInfo;
-import battleship.ships.CruiserInfo;
-import battleship.ships.DestroyerInfo;
-import battleship.ships.ShipInfo;
-import battleship.ships.SubmarineInfo;
+import battleship.enumerations.ShipTypes;
+
+import battleship.ships.Ship;
 
 public class Player {
 	
@@ -19,14 +16,13 @@ public class Player {
 	public final int NUM_SHIPS = 5;
 	
 	private Space[][] spaces;
-	private ShipInfo[] ships;
+	private Ship[] ships;
 	private ArrayList<Space> alreadyGuessed;
 	private UserGrid myShips;
 	private UserGrid myTargetGrid;
 	private boolean isUser;
 	public boolean myTurn;
 	public boolean lost;
-	
 	
 	public Player(boolean user) {
 		isUser = user;
@@ -40,11 +36,11 @@ public class Player {
 		myTurn = false;
 		lost = false;
 		
-		ships = new ShipInfo[NUM_SHIPS];
+		ships = new Ship[NUM_SHIPS];
 		alreadyGuessed = new ArrayList<Space>();
 	}
 	
-	public ShipInfo[] getShips() {
+	public Ship[] getShips() {
 		return ships;
 	}
 	
@@ -54,7 +50,7 @@ public class Player {
 	 * @param ship
 	 * @return
 	 */
-	public ShipInfo fitShip(ShipInfo ship) {
+	public Ship fitShip(Ship ship) {
 		int dir = ship.getDirection();
 		int shipSize = ship.getSize();
 		Random rand = new Random();
@@ -162,11 +158,11 @@ public class Player {
 	 */
 	public void fill() {
 		// Fill the ships array
-		ships[0] = fitShip(new CarrierInfo());
-		ships[1] = fitShip(new BattleshipInfo());
-		ships[2] = fitShip(new CruiserInfo());
-		ships[3] = fitShip(new SubmarineInfo());
-		ships[4] = fitShip(new DestroyerInfo());
+		ships[0] = fitShip(new Ship(ShipTypes.CARRIER));
+		ships[1] = fitShip(new Ship(ShipTypes.BATTLESHIP));
+		ships[2] = fitShip(new Ship(ShipTypes.CRUISER));
+		ships[3] = fitShip(new Ship(ShipTypes.SUBMARINE));
+		ships[4] = fitShip(new Ship(ShipTypes.DESTROYER));
 		
 		if(isUser) {
 			myShips = new UserGrid(DIM_R, DIM_C, "Your Ships");
@@ -177,7 +173,6 @@ public class Player {
 		}
 	}
 	
-	
 	/**
 	 * This method checks whether a ship has been damaged via the "impact" coordinates provided as parameters.
 	 * It will tell the appropriate UI grid to display a hit or miss according to the status of the shot.
@@ -186,7 +181,7 @@ public class Player {
 	 * @return
 	 */
 	public boolean damageShip(int row, int col) {
-		for(ShipInfo ship : ships) {
+		for(Ship ship : ships) {
 			for(Space s : ship.getOccupiedSpaces()) {
 				if(s.getRow() == row && s.getCol() == col) {
 					ship.hit(row, col);
@@ -199,9 +194,9 @@ public class Player {
 						
 						myShips.imHit(row, col);
 						if(ship.isDestroyed()) {
-							JOptionPane.showMessageDialog(null, "Your " + ship.getType() + " has been destroyed.");
+							JOptionPane.showMessageDialog(null, "Your " + ship.getType().name().toLowerCase() + " has been destroyed.");
 							boolean allDestroyed = true;
-							for(ShipInfo aShip : ships) {
+							for(Ship aShip : ships) {
 								if(!aShip.isDestroyed()) {
 									allDestroyed = false;
 									break;
@@ -215,9 +210,9 @@ public class Player {
 					
 					} else {
 						if(ship.isDestroyed()) {
-							JOptionPane.showMessageDialog(null, "You destroyed your opponent's " + ship.getType());
+							JOptionPane.showMessageDialog(null, "You destroyed your opponent's " + ship.getType().name().toLowerCase());
 							boolean allDestroyed = true;
-							for(ShipInfo aShip : ships) {
+							for(Ship aShip : ships) {
 								if(!aShip.isDestroyed()) {
 									allDestroyed = false;
 									break;

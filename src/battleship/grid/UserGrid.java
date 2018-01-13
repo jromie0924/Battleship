@@ -10,7 +10,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import battleship.ships.ShipInfo;
+import battleship.ships.Ship;
 
 public class UserGrid {
 	
@@ -149,8 +149,8 @@ public class UserGrid {
 	 * Places all ships in the user's ships grid.
 	 * @param ships
 	 */
-	public void placeShips(ShipInfo[] ships) {
-		for(ShipInfo ship : ships) {
+	public void placeShips(Ship[] ships) {
+		for(Ship ship : ships) {
 			for(Space s : ship.getOccupiedSpaces()) {
 				int row = s.getRow();
 				int col = s.getCol();

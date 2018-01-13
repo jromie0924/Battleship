@@ -2,12 +2,17 @@ package battleship.ships;
 
 import battleship.grid.Space;
 
+import java.util.Random;
+
+import battleship.enumerations.ShipTypes;
+
 /**
  * Abstract class ShipInfo is the parent class for each of the 5 ships in this game of battleship.
  * @author Jackson
  *
  */
-public abstract class ShipInfo {
+public class Ship {
+	protected ShipTypes shipType;
 	protected int size;
 	protected int[] damage;	// Each index represents a region of the ship.
 							// Hit = 1, Not hit = 0.
@@ -15,7 +20,37 @@ public abstract class ShipInfo {
 	protected int direction; // 0 for horizontal, 1 for vertical.
 	protected boolean destroyed;
 	
-	public abstract String getType();
+	public Ship(ShipTypes type) {
+		switch(type) {
+			case CARRIER:
+				size = 5;
+				break;
+			case BATTLESHIP:
+				size = 4;
+				break;
+			case CRUISER:
+				size = 3;
+				break;
+			case SUBMARINE:
+				size = 3;
+				break;
+			case DESTROYER:
+				size = 2;
+				break;
+		}
+		
+		shipType = type;
+		damage = new int[size];
+		coordinates = new Space[size];
+		destroyed = false;
+		
+		Random rand = new Random();
+		direction = rand.nextInt(2);
+	}
+	
+	public ShipTypes getType() {
+		return this.shipType;
+	}
 	
 	public boolean hit(int row, int col) {
 		int idx = 0;
