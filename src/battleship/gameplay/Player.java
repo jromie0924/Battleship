@@ -1,4 +1,4 @@
-package battleship.grid;
+package battleship.gameplay;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -6,8 +6,9 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import battleship.enumerations.ShipTypes;
-
+import battleship.enumerations.Users;
 import battleship.ships.Ship;
+import battleship.userInterface.UserGrid;
 
 public class Player {
 	
@@ -20,12 +21,12 @@ public class Player {
 	private ArrayList<Space> alreadyGuessed;
 	private UserGrid myShips;
 	private UserGrid myTargetGrid;
-	private boolean isUser;
+	private boolean isPlayer;
 	public boolean myTurn;
 	public boolean lost;
 	
-	public Player(boolean user) {
-		isUser = user;
+	public Player(Users user) {
+		isPlayer = user == Users.PLAYER ? true : false;
 		spaces = new Space[DIM_R][DIM_C];
 		for(int row = 0; row < DIM_R; row++) {
 			for(int col = 0; col < DIM_C; col++) {
@@ -102,7 +103,6 @@ public class Player {
 					ship.setDirection(dir);
 				}
 			
-			
 			} else if(dir == 1) { // Vertical
 				int randCol = rand.nextInt(DIM_C);
 				boolean validCol = false;
@@ -164,7 +164,7 @@ public class Player {
 		ships[3] = fitShip(new Ship(ShipTypes.SUBMARINE));
 		ships[4] = fitShip(new Ship(ShipTypes.DESTROYER));
 		
-		if(isUser) {
+		if(isPlayer) {
 			myShips = new UserGrid(DIM_R, DIM_C, "Your Ships");
 			myShips.placeShips(ships);
 			
@@ -186,7 +186,7 @@ public class Player {
 				if(s.getRow() == row && s.getCol() == col) {
 					ship.hit(row, col);
 					
-					if(isUser) {
+					if(isPlayer) {
 						try {
 							Thread.sleep(200);
 
@@ -230,7 +230,7 @@ public class Player {
 			}
 		}
 		
-		if(isUser) {
+		if(isPlayer) {
 			try {
 				Thread.sleep(200);
 
@@ -248,7 +248,7 @@ public class Player {
 	 * @param opponent
 	 */
 	public void play(Player opponent) {
-		if(isUser) {
+		if(isPlayer) {
 			boolean fired = myTargetGrid.checkForFire();
 			if(fired) {
 				int[] coords = myTargetGrid.getCoords();
@@ -313,8 +313,8 @@ public class Player {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Player user = new Player(true);
-		Player computer = new Player(false);
+		Player user = new Player(Users.PLAYER);
+		Player computer = new Player(Users.COMPUTER);
 		boolean gamePlaying = true;
 		// Place user & computer ships
 		computer.fill();

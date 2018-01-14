@@ -1,4 +1,4 @@
-package battleship.grid;
+package battleship.gameplay;
 
 /**
  * Space class. This class implements the back-end implementation of a particular space in the grid.
@@ -7,18 +7,18 @@ package battleship.grid;
  *
  */
 public class Space {
-	private int[] position;
+	private int row;
+	private int column;
 	private boolean occupied;
 	
-	public Space(int row, int col) {
-		position = new int[2];
-		position[0] = row;
-		position[1] = col;
+	public Space(int row, int column) {
+		this.row = row;
+		this.column = column;
 		occupied = false;
 	}
 	
 	public boolean equals(Space other) {
-		return (position[0] == other.getRow() && position[1] == other.getCol());
+		return (row == other.getRow() && column == other.getCol());
 	}
 	
 	public void setOccupied() {
@@ -30,10 +30,10 @@ public class Space {
 	}
 	
 	public int getRow() {
-		return position[0];
+		return row;
 	}
 	
 	public int getCol() {
-		return position[1];
+		return column;
 	}
 }

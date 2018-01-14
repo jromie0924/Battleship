@@ -1,10 +1,9 @@
 package battleship.ships;
 
-import battleship.grid.Space;
-
 import java.util.Random;
 
 import battleship.enumerations.ShipTypes;
+import battleship.gameplay.Space;
 
 /**
  * Abstract class ShipInfo is the parent class for each of the 5 ships in this game of battleship.

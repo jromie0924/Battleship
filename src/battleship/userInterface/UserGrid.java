@@ -1,4 +1,4 @@
-package battleship.grid;
+package battleship.userInterface;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import battleship.gameplay.Space;
 import battleship.ships.Ship;
 
 public class UserGrid {
