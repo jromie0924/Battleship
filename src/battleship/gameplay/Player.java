@@ -47,7 +47,7 @@ public class Player {
 	
 	/**
 	 * This method fits a ship in the grid.
-	 * It needs to be sure that the ship will not "collide" with any other already-placed ships.
+	 * It needs to be sure that the ship will not "collide" with any other already-placed ships, and ships must be contained within the grid.
 	 * @param ship
 	 * @return
 	 */
@@ -174,11 +174,10 @@ public class Player {
 	}
 	
 	/**
-	 * This method checks whether a ship has been damaged via the "impact" coordinates provided as parameters.
-	 * It will tell the appropriate UI grid to display a hit or miss according to the status of the shot.
+	 * Was the shot a hit?
 	 * @param row
 	 * @param col
-	 * @return
+	 * @return boolean
 	 */
 	public boolean damageShip(int row, int col) {
 		for(Ship ship : ships) {
@@ -236,18 +235,13 @@ public class Player {
 
 			} catch(InterruptedException e) {}
 			
-			myShips.theyMissed(row, col);
+			myShips.miss(row, col);
 		}
 		
 		return false;
 	}
-	
-	/**
-	 * This method controls how each player plays. Users and computers have slightly different ways about going about the game.
-	 * (Though the game is played fairly).
-	 * @param opponent
-	 */
-	public void play(Player opponent) {
+
+	public void takeTurn(Player opponent) {
 		if(isPlayer) {
 			boolean fired = myTargetGrid.checkForFire();
 			if(fired) {
@@ -291,11 +285,6 @@ public class Player {
 		}
 	}
 	
-	/**
-	 * Checks whether a given space is occupied by a ship.
-	 * @param space
-	 * @return
-	 */
 	public boolean checkOccupation(Space space) {
 		int row = space.getRow();
 		int col = space.getCol();
@@ -307,11 +296,6 @@ public class Player {
 		return occupied;
 	}
 	
-	/**
-	 * Main. Instantiates the players (computer and user).
-	 * Runs a loop until one of the players has won.
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		Player user = new Player(Users.PLAYER);
 		Player computer = new Player(Users.COMPUTER);
@@ -325,10 +309,10 @@ public class Player {
 		
 		while(gamePlaying) {
 			if(user.myTurn) {
-				user.play(computer);
+				user.takeTurn(computer);
 			
 			} else {
-				computer.play(user);
+				computer.takeTurn(user);
 			}
 			
 			if(user.lost) {

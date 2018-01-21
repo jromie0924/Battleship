@@ -6,15 +6,14 @@ import battleship.enumerations.ShipTypes;
 import battleship.gameplay.Space;
 
 /**
- * Abstract class ShipInfo is the parent class for each of the 5 ships in this game of battleship.
+ * Class Ship defines the structure and functionality of a Ship
  * @author Jackson
  *
  */
 public class Ship {
 	protected ShipTypes shipType;
 	protected int size;
-	protected int[] damage;	// Each index represents a region of the ship.
-							// Hit = 1, Not hit = 0.
+	protected int[] damage;
 	protected Space[] coordinates;
 	protected int direction; // 0 for horizontal, 1 for vertical.
 	protected boolean destroyed;

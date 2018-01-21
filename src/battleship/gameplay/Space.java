@@ -1,8 +1,7 @@
 package battleship.gameplay;
 
 /**
- * Space class. This class implements the back-end implementation of a particular space in the grid.
- * For instance it stores information about whether it has been occupied and its location in the grid.
+ * Implementation of a particular space in the grid.
  * @author Jackson
  *
  */
