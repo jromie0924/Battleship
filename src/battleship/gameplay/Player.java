@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import battleship.enumerations.ShipTypes;
-import battleship.enumerations.Users;
+import battleship.enumerations.PlayerTypes;
 import battleship.ships.Ship;
 import battleship.userInterface.UserGrid;
 
@@ -25,8 +25,8 @@ public class Player {
 	public boolean myTurn;
 	public boolean lost;
 	
-	public Player(Users user) {
-		isPlayer = user == Users.PLAYER ? true : false;
+	public Player(PlayerTypes user) {
+		isPlayer = user == PlayerTypes.USER ? true : false;
 		spaces = new Space[DIM_R][DIM_C];
 		for(int row = 0; row < DIM_R; row++) {
 			for(int col = 0; col < DIM_C; col++) {
@@ -297,8 +297,8 @@ public class Player {
 	}
 	
 	public static void main(String[] args) {
-		Player user = new Player(Users.PLAYER);
-		Player computer = new Player(Users.COMPUTER);
+		Player user = new Player(PlayerTypes.USER);
+		Player computer = new Player(PlayerTypes.COMPUTER);
 		boolean gamePlaying = true;
 		// Place user & computer ships
 		computer.fill();

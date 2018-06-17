@@ -1,6 +1,6 @@
 package battleship.enumerations;
 
-public enum Users {
-	PLAYER,
+public enum PlayerTypes {
+	USER,
 	COMPUTER
 }
