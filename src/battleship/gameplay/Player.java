@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import battleship.enumerations.ShipTypes;
 import battleship.enumerations.PlayerTypes;
+import battleship.enumerations.RewardLevels;
 import battleship.ships.Ship;
 import battleship.userInterface.UserGrid;
 
@@ -24,6 +25,7 @@ public class Player {
 	private boolean isPlayer;
 	public boolean myTurn;
 	public boolean lost;
+	public RewardLevels reward;
 	
 	public Player(PlayerTypes user) {
 		isPlayer = user == PlayerTypes.USER ? true : false;
@@ -36,7 +38,7 @@ public class Player {
 		
 		myTurn = false;
 		lost = false;
-		
+		reward = RewardLevels.LEVEL_ONE;
 		ships = new Ship[NUM_SHIPS];
 		alreadyGuessed = new ArrayList<Space>();
 	}
