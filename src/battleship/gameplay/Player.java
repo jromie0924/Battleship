@@ -1,4 +1,4 @@
-package battleship.grid;
+package battleship.gameplay;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -6,8 +6,9 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import battleship.enumerations.ShipTypes;
-
+import battleship.enumerations.PlayerTypes;
 import battleship.ships.Ship;
+import battleship.userInterface.UserGrid;
 
 public class Player {
 	
@@ -20,12 +21,12 @@ public class Player {
 	private ArrayList<Space> alreadyGuessed;
 	private UserGrid myShips;
 	private UserGrid myTargetGrid;
-	private boolean isUser;
+	private boolean isPlayer;
 	public boolean myTurn;
 	public boolean lost;
 	
-	public Player(boolean user) {
-		isUser = user;
+	public Player(PlayerTypes user) {
+		isPlayer = user == PlayerTypes.USER ? true : false;
 		spaces = new Space[DIM_R][DIM_C];
 		for(int row = 0; row < DIM_R; row++) {
 			for(int col = 0; col < DIM_C; col++) {
@@ -46,7 +47,7 @@ public class Player {
 	
 	/**
 	 * This method fits a ship in the grid.
-	 * It needs to be sure that the ship will not "collide" with any other already-placed ships.
+	 * It needs to be sure that the ship will not "collide" with any other already-placed ships, and ships must be contained within the grid.
 	 * @param ship
 	 * @return
 	 */
@@ -101,7 +102,6 @@ public class Player {
 					dir = 1;
 					ship.setDirection(dir);
 				}
-			
 			
 			} else if(dir == 1) { // Vertical
 				int randCol = rand.nextInt(DIM_C);
@@ -164,7 +164,7 @@ public class Player {
 		ships[3] = fitShip(new Ship(ShipTypes.SUBMARINE));
 		ships[4] = fitShip(new Ship(ShipTypes.DESTROYER));
 		
-		if(isUser) {
+		if(isPlayer) {
 			myShips = new UserGrid(DIM_R, DIM_C, "Your Ships");
 			myShips.placeShips(ships);
 			
@@ -174,11 +174,10 @@ public class Player {
 	}
 	
 	/**
-	 * This method checks whether a ship has been damaged via the "impact" coordinates provided as parameters.
-	 * It will tell the appropriate UI grid to display a hit or miss according to the status of the shot.
+	 * Was the shot a hit?
 	 * @param row
 	 * @param col
-	 * @return
+	 * @return boolean
 	 */
 	public boolean damageShip(int row, int col) {
 		for(Ship ship : ships) {
@@ -186,7 +185,7 @@ public class Player {
 				if(s.getRow() == row && s.getCol() == col) {
 					ship.hit(row, col);
 					
-					if(isUser) {
+					if(isPlayer) {
 						try {
 							Thread.sleep(200);
 
@@ -230,25 +229,20 @@ public class Player {
 			}
 		}
 		
-		if(isUser) {
+		if(isPlayer) {
 			try {
 				Thread.sleep(200);
 
 			} catch(InterruptedException e) {}
 			
-			myShips.theyMissed(row, col);
+			myShips.miss(row, col);
 		}
 		
 		return false;
 	}
-	
-	/**
-	 * This method controls how each player plays. Users and computers have slightly different ways about going about the game.
-	 * (Though the game is played fairly).
-	 * @param opponent
-	 */
-	public void play(Player opponent) {
-		if(isUser) {
+
+	public void takeTurn(Player opponent) {
+		if(isPlayer) {
 			boolean fired = myTargetGrid.checkForFire();
 			if(fired) {
 				int[] coords = myTargetGrid.getCoords();
@@ -291,11 +285,6 @@ public class Player {
 		}
 	}
 	
-	/**
-	 * Checks whether a given space is occupied by a ship.
-	 * @param space
-	 * @return
-	 */
 	public boolean checkOccupation(Space space) {
 		int row = space.getRow();
 		int col = space.getCol();
@@ -307,14 +296,9 @@ public class Player {
 		return occupied;
 	}
 	
-	/**
-	 * Main. Instantiates the players (computer and user).
-	 * Runs a loop until one of the players has won.
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		Player user = new Player(true);
-		Player computer = new Player(false);
+		Player user = new Player(PlayerTypes.USER);
+		Player computer = new Player(PlayerTypes.COMPUTER);
 		boolean gamePlaying = true;
 		// Place user & computer ships
 		computer.fill();
@@ -325,10 +309,10 @@ public class Player {
 		
 		while(gamePlaying) {
 			if(user.myTurn) {
-				user.play(computer);
+				user.takeTurn(computer);
 			
 			} else {
-				computer.play(user);
+				computer.takeTurn(user);
 			}
 			
 			if(user.lost) {

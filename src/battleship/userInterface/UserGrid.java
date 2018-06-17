@@ -1,4 +1,4 @@
-package battleship.grid;
+package battleship.userInterface;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import battleship.gameplay.Space;
 import battleship.ships.Ship;
 
 public class UserGrid {
@@ -86,10 +87,10 @@ public class UserGrid {
 	}
 	
 	/**
-	 * @return targetCoords[] array
 	 * This list is of length 2.
 	 * Index 0 is the row of the targeted cell.
 	 * Index 1 is the column of the targeted cell.
+	 * @return int[]
 	 */
 	public int[] getCoords() {
 		return targetCoords;
@@ -125,12 +126,12 @@ public class UserGrid {
 	 * @param row
 	 * @param col
 	 */
-	public void theyMissed(int row, int col) {
+	public void miss(int row, int col) {
 		grid[row][col].setForeground(Color.WHITE);
 	}
 	
 	/**
-	 * This method is meant for the user to see that they have hit one of the computer's ships.
+	 * This method is meant for the player to see that they have hit one of the computer's ships.
 	 * The indicated square will be colored red if targetHit is true, and white if targetHit is false.
 	 * @param row
 	 * @param col
