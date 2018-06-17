@@ -22,13 +22,13 @@ public class Player {
 	private ArrayList<Space> alreadyGuessed;
 	private UserGrid myShips;
 	private UserGrid myTargetGrid;
-	private boolean isPlayer;
+	private boolean isUser;
 	public boolean myTurn;
 	public boolean lost;
 	public RewardLevels reward;
 	
 	public Player(PlayerTypes user) {
-		isPlayer = user == PlayerTypes.USER ? true : false;
+		isUser = user == PlayerTypes.USER ? true : false;
 		spaces = new Space[DIM_R][DIM_C];
 		for(int row = 0; row < DIM_R; row++) {
 			for(int col = 0; col < DIM_C; col++) {
@@ -166,7 +166,7 @@ public class Player {
 		ships[3] = fitShip(new Ship(ShipTypes.SUBMARINE));
 		ships[4] = fitShip(new Ship(ShipTypes.DESTROYER));
 		
-		if(isPlayer) {
+		if(isUser) {
 			myShips = new UserGrid(DIM_R, DIM_C, "Your Ships");
 			myShips.placeShips(ships);
 			
@@ -187,7 +187,7 @@ public class Player {
 				if(s.getRow() == row && s.getCol() == col) {
 					ship.hit(row, col);
 					
-					if(isPlayer) {
+					if(isUser) {
 						try {
 							Thread.sleep(200);
 
@@ -226,12 +226,17 @@ public class Player {
 						}
 					}
 					
+					if (reward == RewardLevels.LEVEL_ZERO) {
+						reward = RewardLevels.LEVEL_ONE;
+					} else if (reward == RewardLevels.LEVEL_ONE) {
+						reward = RewardLevels.LEVEL_TWO;
+					}
 					return true;
 				}
 			}
 		}
 		
-		if(isPlayer) {
+		if(isUser) {
 			try {
 				Thread.sleep(200);
 
@@ -240,11 +245,14 @@ public class Player {
 			myShips.miss(row, col);
 		}
 		
+		if (reward == RewardLevels.LEVEL_TWO) {
+			reward = RewardLevels.LEVEL_ONE;
+		}
 		return false;
 	}
 
 	public void takeTurn(Player opponent) {
-		if(isPlayer) {
+		if(isUser) {
 			boolean fired = myTargetGrid.checkForFire();
 			if(fired) {
 				int[] coords = myTargetGrid.getCoords();
