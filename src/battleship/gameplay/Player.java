@@ -226,11 +226,6 @@ public class Player {
 						}
 					}
 					
-					if (reward == RewardLevels.LEVEL_ZERO) {
-						reward = RewardLevels.LEVEL_ONE;
-					} else if (reward == RewardLevels.LEVEL_ONE) {
-						reward = RewardLevels.LEVEL_TWO;
-					}
 					return true;
 				}
 			}
@@ -245,9 +240,6 @@ public class Player {
 			myShips.miss(row, col);
 		}
 		
-		if (reward == RewardLevels.LEVEL_TWO) {
-			reward = RewardLevels.LEVEL_ONE;
-		}
 		return false;
 	}
 
